@@ -71,3 +71,10 @@ install_run欠落とinstall subcommand欠落を先行Redで確認。
 unit36件Green（0.454秒）、固定547 SDKの別worktreeで実統合6件Green（10.809秒）。
 `install`からの実機更新はまだ再実行しておらず、前記3本の実機結果はlibrary guard経路の証拠。
 Mac arm64 CIの旧run43928826073はrunner未取得で中断。保護/必須CIは維持する。
+
+## native USB接続とSDK更新
+
+初回beaconが3.5秒後の実SDK streamを先行追加し、旧1秒timeoutで接続拒否のRedを確認。最大4秒へ変更してGreen。早期送信なし・総待ち12秒未満も検証した。
+共通SDKのMac native USB修正3bb9548846505eac303927b9064c6a8d0eb44f79へ固定し直した。
+unit36件（0.447秒）/実統合7件（5.380秒）が成功。3サンプルを再buildし、各packageのSHAが公開benchmarkの3997ee6b/52f971e8/f9c068d3と完全一致した。
+これはホスト配備経路の修正で、新FWの適用や追加の実機更新はしていない。旧benchmarkの547 SDK記録は当時のまま保持する。

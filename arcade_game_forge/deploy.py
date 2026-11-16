@@ -41,7 +41,7 @@ def transport(sdk_root):
     @contextmanager
     def connect(port):
         with module.serial_connection(port) as stream:
-            client=module.Client(stream)
+            client=module.Client(stream,timeout=4)
             try:
                 client.connect();yield client
             finally:client.close()

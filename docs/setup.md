@@ -6,7 +6,7 @@
 ## 固定SDK
 
 [公開OS](https://github.com/ayutaz/scratch-arcade-os)の
-`547e7ac7e1af8eedf1dc063f97a27a93425f50b7`を、追跡ファイルの変更がない状態で用意する。
+`3bb9548846505eac303927b9064c6a8d0eb44f79`を、追跡ファイルの変更がない状態で用意する。
 SDK側で次を実行する。
 
 ```sh
