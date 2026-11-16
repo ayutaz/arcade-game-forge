@@ -1,0 +1,23 @@
+{
+  "source_sha256": "7c4852970b340faa1ac0ef6f5364abed3d570c58e099e02a14be7da98f38ef05",
+  "spec_sha256": "90f72e7552b77764e6b7c896e0eab8c452c6eb95d5c6791023235460aa095164",
+  "package_sha256": "3997ee6b17cc3c0cc128cb598ebe3c8bdb841679e28ca5e23bd8d9b9ef3ae382",
+  "package_bytes": 1332,
+  "initial_attempts": 1,
+  "initial_success": true,
+  "frames": 191,
+  "traces": {
+    "victory": 37,
+    "random": 133,
+    "edges": 11,
+    "deadline": 6,
+    "back_priority": 4
+  },
+  "both_vms_match": true,
+  "independent_oracle": true,
+  "evaluation_seed": 1125946425,
+  "evaluator_commit": "99b3d2d7aea6534aa583037172d68701ab907b42",
+  "tool_calls": 0,
+  "hand_edits": false,
+  "device_tested": false
+}

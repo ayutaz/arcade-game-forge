@@ -1,49 +1,67 @@
 # Arcade Game Forge
 
-Turn a small game specification into a tested WASM app for
+Generate a small game with Codex, test it in two WASM runtimes, and play it on
 [Scratch Arcade OS](https://github.com/ayutaz/scratch-arcade-os).
-Forge asks the local Codex CLI for C, checks the result against independent game
-rules in two VMs, sends failures back for correction, and reproduces the package.
+Failed tests feed the next attempt. Only a passing, reproducible package is accepted.
 
-[日本語](README.ja.md)
+[日本語](README.ja.md) · [Setup](docs/setup.md) · [Evidence](docs/validation.md)
 
-## Current status
+![Maze replay](docs/media/maze/replay.gif)
 
-The host pipeline and failure handling pass tests. Real AI generation, playable
-sample games and handheld deployment are being verified next. **This is not a
-device-tested release.** Existing tests use a fake generator, real subprocesses,
-the real WASM compiler, Wasmtime and WAMR. A compiling game can still fail.
+*Deterministic host WASM replay; not a handheld recording or real-time performance video.*
 
-The first version supports three closed game types: maze, falling-object dodge,
-and coin collection. It does not generate arbitrary games or new OS features.
+## What works
 
-## Try it
+Three new specifications produced these unedited games with the real Codex CLI.
+Each passed the independent rules, Wasmtime/WAMR, and a matching rebuild on its first attempt.
 
-Install [uv](https://docs.astral.sh/uv/), use an existing ChatGPT login in the
-Codex CLI, and prepare the pinned OS SDK described in [setup](docs/setup.md).
+| Game | Package | Handheld result |
+|---|---:|---|
+| Crystal Maze | 1,332 B | Won, score 1 |
+| Coin Trails | 1,667 B | Won, score 5 |
+| Meteor Lane | 1,601 B | Won, score 3 |
+
+Automated device tests returned to HOME and preserved the 12 existing apps.
+Physical buttons and the LCD were not visually checked in this test.
+These three results are **not a general AI success rate**.
+Forge supports closed maze, collection and dodge rules, not arbitrary game designs.
+
+## Try a game without model access
+
+Install [uv](https://docs.astral.sh/uv/) and prepare the [pinned SDK](docs/setup.md).
 
 ```sh
 uv sync --locked
-uv run --locked python -m arcade_game_forge validate examples/specs/maze.json
-uv run --locked python -m arcade_game_forge make examples/specs/maze.json \
-  --sdk ../scratch-arcade-os --output runs/my-maze --attempts 3 --timeout 180
+uv run --locked python -m arcade_game_forge sample maze \
+  --sdk ../scratch-arcade-os --output runs/my-maze
+uv run --locked python -m arcade_game_forge play runs/my-maze \
+  --sdk ../scratch-arcade-os
 ```
 
-The command returns success only after independent tests and a matching rebuild.
-Failed attempts remain in the local run directory. It never connects to a handheld.
-Generation uses a read-only sandbox and a fresh workspace. API keys and paid API
-fallback are disabled; no GPU is required.
+Choose `maze`, `collect`, or `dodge`. Samples rebuild the published AI source and
+run the independent tests; they do not call a model.
+Mac controls: **Z** start, **arrows** move, **R** reset, **X** exit.
+Handheld: **A**, **directions**, **X** reset, **B** exit, **FN+B** HOME.
+
+## Generate a new version
+
+Use an existing ChatGPT login in the local Codex CLI:
+
+```sh
+uv run --locked python -m arcade_game_forge make examples/specs/maze.json \
+  --sdk ../scratch-arcade-os --output runs/new-maze --attempts 3 --timeout 180
+```
+
+Failures stay in the local run directory. Generation is bounded and read-only,
+with no tool calls, paid API fallback, or GPU. `make` never connects to a handheld.
+[Device evidence and deployment boundaries](docs/device-validation.md).
 
 ## Tests
 
 ```sh
 uv run --locked python -m unittest discover -s tests -v
-# With the pinned OS SDK and Zig/WAMR sources available:
 uv run --locked python -m unittest discover -s tests/integration -v
 ```
 
-The default suite needs no model login, GPU or device. Integration tests compile
-real WASM and check that a wrong game is rejected even when both VMs agree.
-
-Read [game rules](docs/specification.md), [setup](docs/setup.md), and
-[validation](docs/validation.md). Code is licensed under [Apache-2.0](LICENSE).
+The default tests need no model login or device. Integration tests use the real SDK.
+Read the [game contract](docs/specification.md). Code and generated samples: [Apache-2.0](LICENSE).
