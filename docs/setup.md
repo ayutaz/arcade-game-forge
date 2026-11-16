@@ -6,7 +6,7 @@
 ## 固定SDK
 
 [公開OS](https://github.com/ayutaz/scratch-arcade-os)の
-`547e7ac7e1af8eedf1dc063f97a27a93425f50b7`を、追跡ファイルの変更がない状態で用意する。
+`3bb9548846505eac303927b9064c6a8d0eb44f79`を、追跡ファイルの変更がない状態で用意する。
 SDK側で次を実行する。
 
 ```sh
@@ -36,4 +36,18 @@ read-only sandboxの指定を、ネットワーク隔離や完全なコード安
 `runs/<name>/result.json`がaccepted=trueの場合だけ、ready.folderの
 `build/app.labapp`を採用候補にする。各attemptの失敗、C、評価、再現buildも保持する。
 生成Cは限定したprofileで検査し、別header・asm・pragma等を拒否する。
-完成packageは権限drawのみ。配備ツール、所有/hash照合、他app不変の実機確認は別工程。
+完成packageは権限drawのみ。配備ガードと実機の検証範囲は[実機記録](device-validation.md)を参照。
+
+## 試遊と画像
+
+`sample maze|collect|dodge --sdk <SDK> --output runs/<new>`は認証なしで公開Cを再ビルドする。
+`play runs/<name> --sdk <SDK>`は採用済みの同じpackageをMacのウィンドウで実行する。
+`--frames 3600`のように有限にできる。出力やpackageの変更、未採用runは拒否する。
+
+```sh
+uv run --locked python -m arcade_game_forge render runs/my-maze \
+  --sdk ../scratch-arcade-os --output images/my-maze
+```
+
+画像は実WASMのtitle/play/win/lossと勝利GIF。実機撮影や実時間録画とは区別する。
+出力先は新規フォルダのみ。`docs/media/`は公開した3本の例。

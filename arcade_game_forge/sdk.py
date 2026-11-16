@@ -7,7 +7,7 @@ import sys
 from .source import check_source
 from .spec import validate
 
-SDK_COMMIT='547e7ac7e1af8eedf1dc063f97a27a93425f50b7'
+SDK_COMMIT='3bb9548846505eac303927b9064c6a8d0eb44f79'
 
 
 def load_sdk(path):

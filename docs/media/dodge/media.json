@@ -1,0 +1,13 @@
+{
+  "source": "deterministic host WASM replay",
+  "device_capture": false,
+  "real_time_video": false,
+  "screens": {
+    "0": "phase-0.png",
+    "1": "phase-1.png",
+    "2": "phase-2.png",
+    "3": "phase-3.png"
+  },
+  "replay_frames": 54,
+  "package_sha256": "f9c068d35cd4743a79c79dd680454fbc7fb930b5320a598bbc1f3f9b3a980f83"
+}

@@ -1,4 +1,6 @@
 import os
+import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -45,3 +47,20 @@ class SdkTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             build_game(specification(),SOURCE,Path(tmp)/'incorrect',SDK)
             with self.assertRaises(EvaluationError):check_build(specification(),Path(tmp)/'incorrect',SDK,seed=7)
+
+    def test_fixed_package_runs_and_releases_in_real_host_home(self):
+        from arcade_game_forge.play import play
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp).resolve();value=specification()
+            result=build_game(value,SOURCE,root/'attempt-1/game',SDK)
+            (root/'spec.json').write_text(json.dumps(value))
+            (root/'result.json').write_text(json.dumps(dict(accepted=True,status='finished',
+                spec_sha256=hashlib.sha256(json.dumps(value,sort_keys=True).encode()).hexdigest(),
+                ready=dict(folder='attempt-1/game',passed=True,package_sha256=result['package_sha256']))))
+            def window(home,*,max_frames):
+                self.assertEqual(home.mode,'running');self.assertEqual(home.ledger.count,1)
+                home.frame(0,1);home.frame(192,2);home.frame(0,3)
+                self.assertEqual(home.mode,'home');self.assertEqual(home.ledger.count,0)
+                return 3
+            played=play(root,SDK,max_frames=3,window=window)
+            self.assertEqual(played['frames'],3);self.assertFalse(played['device_tested'])

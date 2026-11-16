@@ -1,0 +1,27 @@
+{
+  "apps": [
+    {
+      "kind": "maze",
+      "won": true,
+      "score": 1,
+      "render_crc_matched": true
+    },
+    {
+      "kind": "collect",
+      "won": true,
+      "score": 5,
+      "render_crc_matched": true
+    },
+    {
+      "kind": "dodge",
+      "won": true,
+      "score": 3,
+      "render_crc_decoded": true
+    }
+  ],
+  "preserved_existing_apps": 12,
+  "catalog_count": 15,
+  "home": true,
+  "firmware_updated": false,
+  "physical_keys_or_lcd_human_verified": false
+}

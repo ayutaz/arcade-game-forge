@@ -25,3 +25,56 @@ unitは偽生成器、実fixture子プロセス、独立Game oracleを使用。
 既存ChatGPT CLIの認証状態は読み取りで確認したが、この段階では
 実モデルの生成成功・3サンプル・Mac試遊・実機動作を完了としていない。
 基盤commit後、新しい3仕様で本物の生成器を評価する。
+
+## C include検査の回帰修正
+
+文字列内のcomment開始/終了表記で外部includeを隠せるケースと、Cのdigraph `%:`を先行テストで再現してRed。
+文字列/文字literalとcommentを区別し、digraphを拒否して4件Green（0.001秒）。
+実生成した3appにはこの記法はなく、外部ファイルを実際にcompileした試験ではない。
+
+## 3仕様の実生成と自動修正
+
+評価器を99b3d2dとして固定・公開した後に新しい3仕様を用意した。
+CLI0.169.0の既存ChatGPT認証で生成、tool call 0、手修正0。
+3本とも初回で採用、計615framesを独立規則/Wasmtime/WAMRで確認し、再build hashが一致。
+Cと仕様/来歴は`examples/games/`、数値は[benchmark](../benchmarks/results-v1.json)。
+モデル名はCLIの既定で、今回の記録から特定していない。一般成功率とはしない。
+
+別実験として迷路の勝利得点だけを1→0へ意図的に壊した。
+両VMは同じ誤値でも独立規則がframe34で拒否し、実Codexが診断から修正した。
+初回AI生成の失敗と混同せず、seeded repairとして記録した。
+
+## 試遊/サンプル/画像/配備ガードのTDD
+
+| 動作 | 意図したRed | Green |
+|---|---|---|
+| 固定packageの試遊 | play module欠落 | 採用/hash/パス境界、Homeの起動/終了解放 |
+| サンプル再build | samples module欠落 | 3本の来歴hash、モデルを呼ばない再build |
+| play/sample CLI | subcommand欠落 | CLI引数と生成しない経路 |
+| 配備ガード | deploy module欠落 | 専用ID/権限/HOME/旧hash/他app不変 |
+| 実WASM画像 | media module欠落 | 4画面と動くGIF、上書き拒否 |
+| render CLI | subcommand欠落 | 採用runから画像作成だけを実行 |
+
+サンプルunitの偽forgeが出力フォルダを作らず失敗した1回はfixture不備で、TDDのRedに数えない。
+上記のunit33件Green（0.492秒）、実SDK統合6件Green（5.492秒）。
+統合は別seedで3生成ゲームを再検証した。標準試験と同じ2コマンドで再実行可能。
+
+[実機の勝利/既存12本保持とMac3600frames](device-validation.md)は追加の動作検証。
+本体の見た目/物理操作や任意入力までの保証へは広げない。
+新FW・有料API・GPU契約は使用していない。
+
+## 採用runの配備CLI
+
+install_run欠落とinstall subcommand欠落を先行Redで確認。
+採用済み同一package/metadataを接続前に検査し、専用ID/前hash/他app保持のガードへ接続した。
+成功/拒否のどちらでもconnectionを閉じ、壊れたrunではportを開かない。
+unit36件Green（0.454秒）、固定547 SDKの別worktreeで実統合6件Green（10.809秒）。
+`install`からの実機更新はまだ再実行しておらず、前記3本の実機結果はlibrary guard経路の証拠。
+Mac arm64 CIの旧run43928826073はrunner未取得で中断。保護/必須CIは維持する。
+
+## native USB接続とSDK更新
+
+初回beaconが3.5秒後の実SDK streamを先行追加し、旧1秒timeoutで接続拒否のRedを確認。最大4秒へ変更してGreen。早期送信なし・総待ち12秒未満も検証した。
+共通SDKのMac native USB修正3bb9548846505eac303927b9064c6a8d0eb44f79へ固定し直した。
+unit36件（0.447秒）/実統合7件（5.380秒）が成功。3サンプルを再buildし、各packageのSHAが公開benchmarkの3997ee6b/52f971e8/f9c068d3と完全一致した。
+これはホスト配備経路の修正で、新FWの適用や追加の実機更新はしていない。旧benchmarkの547 SDK記録は当時のまま保持する。

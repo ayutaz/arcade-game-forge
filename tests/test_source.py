@@ -23,3 +23,9 @@ class SourceTests(unittest.TestCase):
                          json.dumps(dict(app_c=GOOD,claim='passed')),
                          '{"app_c":"first","app_c":"second"}'):
             with self.assertRaises(ValueError):parse_response(response)
+
+    def test_string_comment_markers_and_c_digraphs_cannot_hide_host_includes(self):
+        for source in (GOOD+'const char *a="/*";\n#include "/tmp/foreign"\nconst char *b="*/";',
+                       GOOD+'\n%:include "/tmp/foreign"\n',
+                       GOOD+'\nconst char *a="//";\n#include "/tmp/foreign"\n'):
+            with self.assertRaises(ValueError):check_source(source)
