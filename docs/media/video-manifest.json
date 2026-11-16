@@ -1,0 +1,76 @@
+{
+  "project": "arcade-game-forge",
+  "source": "actual WASM replay GIFs, edited timing",
+  "device_capture": false,
+  "real_time_video": false,
+  "notices": null,
+  "audio": "synthetic editing soundtrack, not device audio",
+  "width": 1080,
+  "height": 1350,
+  "fps": 30,
+  "duration_seconds": 22,
+  "chapters": [
+    {
+      "id": "scene-0",
+      "start": 0,
+      "end": 3,
+      "tag": "arcade-game-forge",
+      "title": [
+        "AIが作ったゲーム、",
+        "本体で動いた。"
+      ],
+      "caption": "仕様から生成・試験・WASMへ。"
+    },
+    {
+      "id": "scene-1",
+      "start": 3,
+      "end": 8,
+      "tag": "arcade-game-forge",
+      "title": [
+        "迷路・収集・回避。",
+        "3種類を自動生成。"
+      ],
+      "caption": "公開したCコードをそのまま再生。"
+    },
+    {
+      "id": "scene-2",
+      "start": 8,
+      "end": 12,
+      "tag": "arcade-game-forge",
+      "title": [
+        "2つのVMで試験。",
+        "失敗ならAIが修正。"
+      ],
+      "caption": "独立したゲーム規則でも判定。"
+    },
+    {
+      "id": "scene-3",
+      "start": 12,
+      "end": 17,
+      "tag": "arcade-game-forge",
+      "title": [
+        "3本を実機でクリア。",
+        "得点 1 / 5 / 3。"
+      ],
+      "caption": "映像はホスト再生。実機結果は別途検証。"
+    },
+    {
+      "id": "oss",
+      "start": 17,
+      "end": 22,
+      "tag": "OPEN SOURCE / Apache-2.0",
+      "title": [
+        "ゲーム制作の工程を、",
+        "OSSで公開。"
+      ],
+      "caption": "arcade-game-forge"
+    }
+  ],
+  "renderer_sha256": "78c19ea3d4e4fea4e5c1470f10d3c65af66bc20c8caf0054b8ea1b4872383960",
+  "source_sha256": {
+    "maze": "257b387e8d31acfbe2a983794b8bd76244ff1f02f36824912739e51cf883e834",
+    "collect": "85a08cb87311a6db9b7c07fee642f818e6d1a3f2abd9741d589f7f95022b8bf5",
+    "dodge": "2651aa5137fb729e9fe8c3c78587d3917269fb56460886fc6ec39ebe360595be"
+  },
+  "video_sha256": "6008b95867fe84357ce96d1ec4038e974728df36a85d92859a7135bac9381c3c"
+}

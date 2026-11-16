@@ -10,6 +10,8 @@ Failed tests feed the next attempt. Only a passing, reproducible package is acce
 
 *Deterministic host WASM replay; not a handheld recording or real-time performance video.*
 
+[22-second demo](docs/media/demo.mp4) — edited host replay with a synthetic soundtrack; Japanese captions. Not handheld footage.
+
 ## What works
 
 Three new specifications produced these unedited games with the real Codex CLI.
