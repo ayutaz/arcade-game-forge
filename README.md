@@ -56,6 +56,20 @@ Failures stay in the local run directory. Generation is bounded and read-only,
 with no tool calls, paid API fallback, or GPU. `make` never connects to a handheld.
 [Device evidence and deployment boundaries](docs/device-validation.md).
 
+## Install an accepted game
+
+With compatible Scratch Arcade OS already installed, detect its serial port and run:
+
+```sh
+uv run --locked python -m arcade_game_forge install runs/my-maze \
+  --sdk ../scratch-arcade-os --port "$PORT"
+```
+
+Start from HOME with released keys. Updating an existing Forge app also requires
+`--previous-sha` with its exact installed package hash. The CLI validates the
+accepted artifact before connecting and checks that other apps stay unchanged.
+It does not install or replace device firmware.
+
 ## Tests
 
 ```sh

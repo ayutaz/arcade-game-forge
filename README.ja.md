@@ -54,6 +54,19 @@ uv run --locked python -m arcade_game_forge make examples/specs/maze.json \
 有料APIへの切替とGPU利用はありません。`make`は実機へ接続しません。
 [実機の記録と配備範囲](docs/device-validation.md)。
 
+## 採用したゲームの追加
+
+対応するScratch Arcade OSが動く本体のポートを検出し、次を実行します。
+
+```sh
+uv run --locked python -m arcade_game_forge install runs/my-maze \
+  --sdk ../scratch-arcade-os --port "$PORT"
+```
+
+HOMEで全キーを離して開始します。既存Forgeアプリの更新には、現在のpackage hashを
+`--previous-sha`へ指定します。採用済みファイルを接続前に検査し、他のアプリも照合します。
+本体FWの導入・置き換えは行いません。
+
 ## テスト
 
 ```sh
