@@ -1,0 +1,6 @@
+Arcade Game Forge
+Copyright 2026 Arcade Game Forge contributors
+
+Targets the public Scratch Arcade OS ABI 2 SDK (Apache-2.0).
+The SDK and pinned WAMR dependencies remain separate checkouts.
+No firmware or private device material is included.

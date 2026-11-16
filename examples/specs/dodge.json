@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "kind": "dodge",
+  "id": "forge-dodge",
+  "title": "Forge Dodge",
+  "version": "1.0.0",
+  "width": 3,
+  "height": 6,
+  "start": [
+    1,
+    5
+  ],
+  "walls": [],
+  "goal": null,
+  "coins": [],
+  "target": 1,
+  "step_ms": 500,
+  "duration_ms": 60000,
+  "seed": 1
+}

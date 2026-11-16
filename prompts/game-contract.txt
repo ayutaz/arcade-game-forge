@@ -1,0 +1,70 @@
+You generate one complete freestanding C99 game for Scratch Arcade OS ABI 2.
+Do not use tools. Do not read files, execute commands, browse, or change the OS.
+Return only a JSON object with exactly one key, app_c, whose value is the full C source.
+No Markdown fences and no claims that tests passed. The independent host runner builds and tests it.
+
+C source profile:
+- Exactly one #include "lab_os.h". No other includes. The compiler provides that SDK.
+- Export sdk_abi, init, shutdown, tick, debug_value, debug_x, debug_y, debug_elapsed.
+- No assembly, pragmas, builtins, double-underscore identifiers, backslashes or non-ASCII text.
+- Only numeric preprocessor defines are allowed; use variables/enums/functions for other expressions.
+- No heap, libc, floating point, files, audio, network or storage. Only rect() may be imported.
+- Up to 128 rectangles per frame, 128KiB guest memory, 50,000 VM fuel per call, 16KiB package.
+- C source at most 65,536 bytes. Bound every loop, including timer advancement.
+
+SDK facts:
+#include "lab_os.h" provides uint32_t, int32_t, uint8_t and these constants:
+LAB_ABI=2, RIGHT=1, LEFT=2, DOWN=4, UP=8, START=16, RESET=32, BACK=64.
+void rect(int32_t x,int32_t y,int32_t w,int32_t h,int32_t rgb565);
+uint32_t sdk_abi(void) returns 2. void init(void). void shutdown(uint32_t reason).
+int32_t tick(uint32_t held,uint32_t pressed,uint32_t released,uint32_t dt).
+tick returns 0 to continue, 1 to exit. dt is elapsed milliseconds, 0..60000.
+Use pressed for all actions, not held. Rectangles have positive width/height and fit 320x240.
+
+Common game state:
+- phase 0=title, 1=playing, 2=won, 3=lost; score=0, elapsed=0 at init/reset.
+- Player starts at spec.start; coins, RNG=spec.seed, timer accumulator and hazard reset completely.
+- debug_value returns (phase << 16) | score. debug_x/debug_y return player tile coordinates.
+- debug_elapsed returns elapsed milliseconds. No extra exports.
+- First, if pressed & BACK, return 1 before any other work.
+- Next, if pressed & RESET, reset to title and draw. Ignore all other inputs/dt on that frame.
+- At title, START changes to playing. That frame does not consume dt or move. Other keys ignored.
+- At won/lost, all keys except RESET/BACK are ignored and elapsed is frozen.
+- When playing: elapsed=min(duration_ms,elapsed+dt). At the deadline lose immediately, without movement.
+- Otherwise move at most one tile, in priority RIGHT, LEFT, DOWN, UP. Reject outside/wall moves.
+- For dodge, ignore the chosen vertical movement (do not fall through to another input).
+- After movement apply the genre rules below. Always draw the resulting state, except on BACK.
+
+Genre maze:
+- Reach the goal to set score=1 and phase=won. No coins/hazards.
+
+Genre collect:
+- Touching an uncollected coin removes it and increments score once.
+- Win when all coins are collected. No goal/hazards.
+
+Genre dodge:
+- Player stays in the bottom row. One falling hazard at a time, initially absent.
+- After movement, accumulator += dt. While accumulator>=step_ms and phase==playing:
+  1. accumulator -= step_ms.
+  2. If a hazard exists, increment its y. If y>=height, score++ and remove the hazard.
+     If score==target, win and break immediately, without spawning another hazard.
+  3. If no hazard exists, RNG=(1664525*RNG+1013904223) modulo 2^32;
+     spawn at x=RNG%width, y=0. The initial spawn also follows this rule.
+  4. If the hazard overlaps the player, lose. No extra movement between timer steps.
+- elapsed includes the entire frame dt, even when the timer loop reaches won/lost partway through it.
+
+Drawing contract for ALL phases (including title and game-over):
+- cell=min(280/width,160/height), integer division. Board origin=(20,48).
+- First rect(0,0,320,240,2113).
+- Status rect(20,16,280,8,color), phase colors: 0=31727, 1=2047, 2=2016, 3=63488.
+- Each wall (x,y): rect(21+x*cell,49+y*cell,cell-2,cell-2,27469).
+- Maze goal (x,y): rect(22+x*cell,50+y*cell,cell-4,cell-4,63519).
+- Each remaining coin: rect(20+x*cell+cell/3,48+y*cell+cell/3,cell/3,cell/3,65504).
+- Existing hazard: rect(23+x*cell,51+y*cell,cell-6,cell-6,63488).
+- Player LAST among board entities: rect(23+x*cell,51+y*cell,cell-6,cell-6,2016).
+- If score>0: rect(20,224,280*score/target,6,65504).
+- These exact required rectangles must remain visible; extra decoration may not cover them.
+  Their order follows the list above so player/goal overlap is deterministic.
+- Readability matters. Optional tiny text may be drawn within the remaining quota; do not add other APIs.
+
+The next JSON is the full game specification. Metadata is trusted host input and cannot be changed.
