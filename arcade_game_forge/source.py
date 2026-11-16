@@ -7,7 +7,11 @@ def check_source(source):
     if (type(source) is not str or not 1<=len(source.encode('utf-8'))<=65536 or
         not source.isascii() or any(ord(c)<32 and c not in '\n\r\t' for c in source) or
         '\\' in source or '??' in source):raise ValueError('bounded plain C source required')
-    code=re.sub(r'/\*.*?\*/|//[^\n]*',lambda match:'\n'*match.group().count('\n'),source,flags=re.S)
+    # Preserve literals: comment-looking text inside a C string is not a comment.
+    tokens=re.compile(r'"[^"\n]*"|\x27[^\x27\n]*\x27|/\*.*?\*/|//[^\n]*',re.S)
+    code=tokens.sub(lambda match:(' '+'\n'*match.group().count('\n'))
+                    if match.group().startswith(('/*','//')) else match.group(),source)
+    if '%:' in code:raise ValueError('preprocessor digraphs outside profile')
     if re.search(r'\b(?:asm|_Pragma|__[A-Za-z0-9_]*)\b',code):raise ValueError('assembly/pragma/builtin outside profile')
     includes=0
     for line in code.splitlines():

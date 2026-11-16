@@ -25,3 +25,9 @@ unitは偽生成器、実fixture子プロセス、独立Game oracleを使用。
 既存ChatGPT CLIの認証状態は読み取りで確認したが、この段階では
 実モデルの生成成功・3サンプル・Mac試遊・実機動作を完了としていない。
 基盤commit後、新しい3仕様で本物の生成器を評価する。
+
+## C include検査の回帰修正
+
+文字列内のcomment開始/終了表記で外部includeを隠せるケースと、Cのdigraph `%:`を先行テストで再現してRed。
+文字列/文字literalとcommentを区別し、digraphを拒否して4件Green（0.001秒）。
+実生成した3appにはこの記法はなく、外部ファイルを実際にcompileした試験ではない。
