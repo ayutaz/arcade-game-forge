@@ -30,3 +30,9 @@ FWの書き込み・自動削除・再起動は行わない。
 Macは同じ迷路packageをSDLで3600frames実行し、終了時に資源を解放した。
 ウィンドウの目視はツールのUI安全制限で確認できず、別経路で迂回していない。
 公開画像はホストの決定的なWASM再生であり、実機写真ではない。
+
+## 公開CLIでの追加照合
+
+後続で`install runs/benchmark-v1/maze --previous-sha <exact installed hash>`を実行し、
+同一の所有済みmazeだけを更新した。package SHA3997ee6b…、HOME/キー解放、全15appの
+id/title/version/hash不変を再接続して照合。[匿名結果](device/cli-v1.json)。新FWは適用していない。

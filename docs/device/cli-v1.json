@@ -1,0 +1,8 @@
+{
+  "action": "CLI exact-hash owned maze update",
+  "same_package_sha256": "3997ee6b17cc3c0cc128cb598ebe3c8bdb841679e28ca5e23bd8d9b9ef3ae382",
+  "preserved_catalog": 15,
+  "home": true,
+  "firmware_updated": false,
+  "physical_display_verified": false
+}
