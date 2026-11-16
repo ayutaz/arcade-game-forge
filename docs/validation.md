@@ -85,3 +85,7 @@ main11a40aaをGitHubから新規cloneし、空のuv環境で`uv sync --locked`�
 公開SDK3bb9548の既存toolchainを使用し、両VM/独立試験が成功、1,332B/SHA3997ee6b…を再現した。
 生成器の認証・有料API・GPUは使わない。別工程で本体の同一mazeをCLIから所有hash付き更新し、HOMEと15app完全一致を確認した。
 前節の「install CLIはまだ再実行していない」は当時の状態であり、今回の追加結果で更新する。LCD/実ボタン/物理電源は未確認のまま。
+
+## 短い公開デモ
+
+公開GIFを既存の動画editorで4:5/22秒へ編集。ffprobeで1080×1350、30fps、H.264/yuv420p、AAC、22秒を確認。各章の画像を目視した。manifestに入力/renderer/出力hashと章構成を保存。ホスト再生・編集音を映像とREADMEで明記し、実機撮影/実時間性能/実ジョブの録画とは扱わない。新しいrendererの実装や実機操作ではない。
