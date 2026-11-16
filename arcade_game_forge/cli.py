@@ -3,6 +3,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+from .deploy import install_run
 from .evaluate import check_build
 from .generator import CodexGenerator
 from .pipeline import forge
@@ -29,8 +30,14 @@ def main(argv=None,*,out=None):
     sample.add_argument('--sdk',required=True);sample.add_argument('--output',required=True,type=Path)
     renderer=sub.add_parser('render');renderer.add_argument('run',type=Path)
     renderer.add_argument('--sdk',required=True);renderer.add_argument('--output',required=True,type=Path)
+    installer=sub.add_parser('install');installer.add_argument('run',type=Path)
+    installer.add_argument('--sdk',required=True);installer.add_argument('--port',required=True)
+    installer.add_argument('--previous-sha')
     args=parser.parse_args(argv)
     try:
+        if args.action=='install':
+            result=install_run(args.run,args.sdk,args.port,previous_sha=args.previous_sha)
+            print(json.dumps(result),file=out);return 0
         if args.action=='render':
             result=render_run(args.run,args.sdk,args.output)
             print(json.dumps(result),file=out);return 0

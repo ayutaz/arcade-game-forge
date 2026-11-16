@@ -8,6 +8,11 @@ from fixtures import spec
 from arcade_game_forge.cli import main
 
 class CliTests(unittest.TestCase):
+    def test_install_requires_explicit_port_and_passes_the_previous_owned_hash(self):
+        with patch('arcade_game_forge.cli.install_run',return_value=dict(id='forge-maze'),create=True) as install:
+            self.assertEqual(main(['install','runs/accepted','--sdk','sdk','--port','port','--previous-sha','a'*64],out=io.StringIO()),0)
+            self.assertEqual(install.call_args.kwargs['previous_sha'],'a'*64)
+
     def test_render_uses_an_accepted_run_without_generation(self):
         with patch('arcade_game_forge.cli.render_run',return_value=dict(source='host replay'),create=True) as render:
             self.assertEqual(main(['render','runs/example','--sdk','sdk','--output','images/new'],out=io.StringIO()),0)

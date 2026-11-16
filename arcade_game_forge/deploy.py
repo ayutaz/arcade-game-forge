@@ -1,6 +1,7 @@
 """Dedicated Forge IDs only; no firmware, removal or unrelated-app updates."""
 import hashlib
 import re
+from .play import ready_package
 
 IDS={'forge-maze','forge-dodge','forge-collect'}
 
@@ -27,3 +28,31 @@ def install_game(client,package,decode,*,previous_sha=None):
         sorted((row for row in after if row['id']!=name),key=lambda row:row['id'])!=sorted(others,key=lambda row:row['id'])):
         raise RuntimeError('catalog changed unexpectedly; stop without deleting or retrying')
     return actual
+
+
+def transport(sdk_root):
+    """Use only the pinned SDK's beacon-gated finite transfer transport."""
+    from contextlib import contextmanager
+    import importlib
+    from .sdk import load_sdk
+    load_sdk(sdk_root)
+    decode=importlib.import_module('labos.package').decode
+    module=importlib.import_module('labos.transfer')
+    @contextmanager
+    def connect(port):
+        with module.serial_connection(port) as stream:
+            client=module.Client(stream)
+            try:
+                client.connect();yield client
+            finally:client.close()
+    return decode,connect
+
+
+def install_run(run,sdk_root,port,*,previous_sha=None):
+    # Validate the fixed accepted artifact before opening a serial connection.
+    spec,package=ready_package(run)
+    decode,connect=transport(sdk_root);manifest,_=decode(package)
+    if (manifest['id'] not in IDS or manifest['capabilities']!=['draw'] or
+        any(manifest[key]!=spec[key] for key in ('id','title','version'))):
+        raise ValueError('trusted game metadata required')
+    with connect(port) as client:return install_game(client,package,decode,previous_sha=previous_sha)

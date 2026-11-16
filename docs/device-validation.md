@@ -15,7 +15,16 @@ HOME/キー解放、専用ID、draw権限、16KiB、catalog空きを確認して
 
 配備ガードは`arcade_game_forge.deploy.install_game`。SDKのclient/decodeを渡して使う。
 削除・FW更新・既存他app変更を含まない。前後照合に失敗したら再試行せず停止する。
-専用CLIによる一般利用の導線は今後整備する。
+`install` CLIから同じガードを使える。採用済みrun/hash/metadataをポート接続前に検査する。
+
+```sh
+uv run --locked python -m arcade_game_forge install runs/my-maze \
+  --sdk <固定SDKのpath> --port <検出した本体ポート>
+```
+
+既存の同IDを更新する場合は、一覧で照合した前版のSHA-256を`--previous-sha`へ指定する。
+本体のHOMEとキー解放が必要。未対応FWにはbeacon確認前に送信しない。
+FWの書き込み・自動削除・再起動は行わない。
 
 物理キー/実LCD/電源再投入の確認ではない。CRC一致は見た目の目視確認を代行しない。
 Macは同じ迷路packageをSDLで3600frames実行し、終了時に資源を解放した。

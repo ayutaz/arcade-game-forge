@@ -62,3 +62,12 @@ Cと仕様/来歴は`examples/games/`、数値は[benchmark](../benchmarks/resul
 [実機の勝利/既存12本保持とMac3600frames](device-validation.md)は追加の動作検証。
 本体の見た目/物理操作や任意入力までの保証へは広げない。
 新FW・有料API・GPU契約は使用していない。
+
+## 採用runの配備CLI
+
+install_run欠落とinstall subcommand欠落を先行Redで確認。
+採用済み同一package/metadataを接続前に検査し、専用ID/前hash/他app保持のガードへ接続した。
+成功/拒否のどちらでもconnectionを閉じ、壊れたrunではportを開かない。
+unit36件Green（0.454秒）、固定547 SDKの別worktreeで実統合6件Green（10.809秒）。
+`install`からの実機更新はまだ再実行しておらず、前記3本の実機結果はlibrary guard経路の証拠。
+Mac arm64 CIの旧run43928826073はrunner未取得で中断。保護/必須CIは維持する。
