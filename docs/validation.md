@@ -78,3 +78,10 @@ Mac arm64 CIの旧run43928826073はrunner未取得で中断。保護/必須CIは
 共通SDKのMac native USB修正3bb9548846505eac303927b9064c6a8d0eb44f79へ固定し直した。
 unit36件（0.447秒）/実統合7件（5.380秒）が成功。3サンプルを再buildし、各packageのSHAが公開benchmarkの3997ee6b/52f971e8/f9c068d3と完全一致した。
 これはホスト配備経路の修正で、新FWの適用や追加の実機更新はしていない。旧benchmarkの547 SDK記録は当時のまま保持する。
+
+## 公開cloneでの再現と配備CLI
+
+main11a40aaをGitHubから新規cloneし、空のuv環境で`uv sync --locked`→`sample maze`を実行。
+公開SDK3bb9548の既存toolchainを使用し、両VM/独立試験が成功、1,332B/SHA3997ee6b…を再現した。
+生成器の認証・有料API・GPUは使わない。別工程で本体の同一mazeをCLIから所有hash付き更新し、HOMEと15app完全一致を確認した。
+前節の「install CLIはまだ再実行していない」は当時の状態であり、今回の追加結果で更新する。LCD/実ボタン/物理電源は未確認のまま。
