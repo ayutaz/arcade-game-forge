@@ -81,3 +81,5 @@ uv run --locked python -m unittest discover -s tests/integration -v
 
 The default tests need no model login or device. Integration tests use the real SDK.
 Read the [game contract](docs/specification.md). Code and generated samples: [Apache-2.0](LICENSE).
+
+Release packaging: [source archive and checksum](docs/releases.md). No tagged release has been published yet.

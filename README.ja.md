@@ -78,3 +78,5 @@ uv run --locked python -m unittest discover -s tests/integration -v
 
 標準試験はモデル認証/実機不要。統合試験は実SDKを使います。
 [ゲーム規則](docs/specification.md)を参照してください。コード/生成サンプルは[Apache-2.0](LICENSE)です。
+
+配布手順は[ソースリリース](docs/releases.md)へ。正式タグ/Releaseはまだ公開していません。
