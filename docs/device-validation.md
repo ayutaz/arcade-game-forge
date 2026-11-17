@@ -36,3 +36,10 @@ Macは同じ迷路packageをSDLで3600frames実行し、終了時に資源を解
 後続で`install runs/benchmark-v1/maze --previous-sha <exact installed hash>`を実行し、
 同一の所有済みmazeだけを更新した。package SHA3997ee6b…、HOME/キー解放、全15appの
 id/title/version/hash不変を再接続して照合。[匿名結果](device/cli-v1.json)。新FWは適用していない。
+
+## 音声FW追加後の互換性
+
+2026-11-17 JST。音声FW1affc424…へ個別許可後に更新し、AI Petを含む16本を保持した環境でも確認した。
+通常SoC resetの新boot後、同じ3packageの表紙描画命令CRC/終了/HOME/VM復帰/heap減少4KiB以内と全16本の版/hash一致に成功した。
+この回帰は表紙と終了の範囲。先の得点1/5/3の勝利を、このFWで再測定したとは扱わない。
+実LCD/物理キー/電池の電源断は未確認。ゲームのコード/packageは変更していない。
