@@ -43,3 +43,9 @@ id/title/version/hash不変を再接続して照合。[匿名結果](device/cli-
 通常SoC resetの新boot後、同じ3packageの表紙描画命令CRC/終了/HOME/VM復帰/heap減少4KiB以内と全16本の版/hash一致に成功した。
 この回帰は表紙と終了の範囲。先の得点1/5/3の勝利を、このFWで再測定したとは扱わない。
 実LCD/物理キー/電池の電源断は未確認。ゲームのコード/packageは変更していない。
+
+## 音声v3版での限定互換性
+
+2026-11-18。別途レビュー/個別許可したOS e5915861…の通常SoC reset後、既存3packageで表紙CRC/終了/HOME・VM復帰/heap減少4KiB以内・全16本の版/hash保持を確認した。[匿名結果](device/voice-v3-compatibility-v1.json)。
+
+ゲームのcode/packageは変更していない。この試験は表紙と終了の回帰で、以前の勝利/得点を新FWで再計測した結果ではない。実LCD/物理キー/電池の電源断/実機撮影は引き続き未確認。
