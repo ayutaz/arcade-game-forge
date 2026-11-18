@@ -1,0 +1,15 @@
+{
+  "apps": [
+    "forge-maze",
+    "forge-collect",
+    "forge-dodge"
+  ],
+  "covers_match_wasm": true,
+  "home": true,
+  "catalog_preserved": 16,
+  "resource_recovery": true,
+  "after_verified_soc_reset": true,
+  "firmware_updated": false,
+  "physical_keys_or_display_verified": false,
+  "firmware_sha256": "e59158619b0a3956c771d0b099a5d7201ff6d05e86c593c0b27e0250effd4c0c"
+}
