@@ -24,7 +24,8 @@ Each passed the independent rules, Wasmtime/WAMR, and a matching rebuild on its 
 | Meteor Lane | 1,601 B | Won, score 3 |
 
 Automated device tests returned to HOME and preserved the 12 existing apps.
-Physical buttons and the LCD were not visually checked in this test.
+Physical buttons and the LCD were not visually checked in that automated test.
+On 2026-11-19, the owner confirmed the display and physical controls of all three games.
 These three results are **not a general AI success rate**.
 Forge supports closed maze, collection and dodge rules, not arbitrary game designs.
 
